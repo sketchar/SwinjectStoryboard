@@ -12,7 +12,7 @@ let package = Package(
         .library(name: "SwinjectStoryboard", targets: ["SwinjectStoryboard"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/Swinject/Swinject.git", .upToNextMajor(from: "2.7.1")),
+        .package(url: "https://github.com/sketchar/Swinject.git", .upToNextMajor(from: "2.13.0")),
     ],
     targets: [
         .target(
