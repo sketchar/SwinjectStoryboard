@@ -34,6 +34,19 @@ extension Container {
         _register(Controller.self, factory: factory, name: name, option: option)
             .initCompleted(wrappingClosure)
     }
+
+    /// Adds a registration with a `@MainActor`-isolated `initCompleted` closure.
+    /// The closure is wrapped to execute via `MainActor.assumeIsolated` when the controller is instantiated.
+    @MainActor
+    public func storyboardInitCompleted<C: Controller>(_ controllerType: C.Type, name: String? = nil, initCompleted: @escaping @MainActor (Resolver, C) -> ()) {
+        let factory = { (_: Resolver, controller: Controller) in controller }
+        let wrappingClosure: (Resolver, Controller) -> () = { r, c in
+            MainActor.assumeIsolated { initCompleted(r, c as! C) }
+        }
+        let option = SwinjectStoryboardOption(controllerType: controllerType)
+        _register(Controller.self, factory: factory, name: name, option: option)
+            .initCompleted(wrappingClosure)
+    }
 }
 #endif
 
